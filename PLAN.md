@@ -2,7 +2,7 @@
 git clone https://github.com/jericbas/Air-fryer-bread-calculator.git
 cd Air-fryer-bread-calculator
 
-# 2. Remove old project files (keeps the .git folder and your README)
+(keeps the .git folder and your README)
 
 
 
