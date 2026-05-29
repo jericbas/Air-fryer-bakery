@@ -1,38 +1,3 @@
-# Project Plan: Air-Fryer Bread Calculator (V1.2+)
-
-## 🚀 Overall Goal
-To finalize the calculation engine, deploy a polished V1.2 feature set (e.g., advanced ingredient substitutions or seasonal recipes), and ensure full production readiness for market launch.
-
-## ✅ Status
-*   **Core Architecture:** Complete (Service Layer implemented using `ICalculationEngine`).
-*   **V1.1 Features:** Complete (Contextual Wizard UI).
-*   **Next Milestone Target:** V1.2 Feature Implementation & Full Test Suite Coverage.
-
----
-## 🗓️ Roadmap / Tasks
-### [X] Stage 1: Initial Setup & Scaffolding (Completed)
-*   Scaffolded core structure (`src/utils`, `src/types`, etc.).
-*   Implemented initial calculation logic for basic bread profiles.
-
-### [X] Stage 2: Advanced Substitutions & Logic (V1.2 Complete)
-*   Implemented ingredient substitution rules (e.g., flax egg, sour cream).
-*   Added complex dough stability analysis (Protein/Starch/Hydration ratios).
-
-### [ ] Stage 3: End-to-End Testing & Edge Cases (Pending Final Pass)
-*   Expand unit test coverage for all calculation methods using edge case inputs (zero weights, invalid types). *Current tests cover many cases but require deeper structural validation.*
-
-### [ ] Stage 4: Component Integration & Refinement (To Do)
-*   Connect the `useBreadCalculator` hook to a full React component tree.
-*   Implement complex UI feedback for user-facing error handling and best practices advice.
-
-### [X] Stage 5: Documentation, Deployment & Sync (Completed)
-*   Updated `README.md` with installation/usage instructions.
-*   Created `.github/workflows/deploy.yml` to automate linting, type-checking, building, and deployment on `main`.
-
-## ⚙️ Technical Notes
-*   **Constraint:** All development must remain confined to the `/juva/` scope.
-*   **Tools:** Utilize `baking-calculator-workflow` skill for architectural guidance.
----
 # 1. Clone  repo
 git clone https://github.com/jericbas/Air-fryer-bread-calculator.git
 cd Air-fryer-bread-calculator
@@ -536,4 +501,3 @@ jobs:
         uses: actions/deploy-pages@v4
 
 ```
->>>>>>> develop
