@@ -1,0 +1,22 @@
+# Dependencies
+/node_modules
+/.bun/
+
+# Build output
+dist/
+build/
+
+# Logs and cache
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+
+# Environment variables
+.env
+.env.*.local
