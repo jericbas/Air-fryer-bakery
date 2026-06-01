@@ -1,67 +1,88 @@
-// src/utils/calculations.ts
-import { Ingredient, Recipe } from '../types';
+import { HYDRATION_RATES, BAKERS_PERCENTAGES } from '../constants/recipeConfig';
+import { RecipeConfig, CalculatedIngredients, DoughProfile, SubstituteInputs } from '../types';
 
 /**
- * @description Calculates the total required ingredients for a recipe profile, applying substitution rules where necessary.
- * @param recipe The recipe object defining the desired bread profile.
- * @param substitutions A map of substituted ingredients (e.g., {'flour': 'almond_flour'}).
- * @returns An object containing calculated ingredient amounts and any warnings.
+ * Calculates the required ingredients for a bread recipe, incorporating advanced substitution logic.
+ * This function strictly adheres to the Single Responsibility Principle (SRP).
+ * 
+ * @param config The primary recipe configuration defining inputs.
+ * @returns An object containing calculated ingredient amounts with substitutions applied.
  */
-export const calculateIngredientsForProfile = (recipe: Recipe, substitutions: Record<string, string>) => {
-    let totalIngredients: Map<string, number> = new Map();
-    let warnings: string[] = [];
+export const calculateIngredients = (config: RecipeConfig): CalculatedIngredients => {
+  const { flourWeight: weight, flourType, liquidBase, technique, substitutes } = config;
 
-    // 1. Initial pass: Sum all primary ingredients
-    for (const ingredient of recipe.ingredients) {
-        totalIngredients.set(ingredient.name, (totalIngredients.get(ingredient.name) || 0) + ingredient.amount);
-    }
+  // --- 1. Handle Flour Substitutions and Primary Ingredient Weighting ---
+  let mainFlour = weight;
+  let substituteFactor = 1.0;
 
-    // 2. Substitution pass: Check for substitutions and adjust totals
-        // 2. Substitution pass: Check for substitutions and adjust totals
-        const substitutionRules = {
-            'wheat_flour': { substitute: 'almond_flour', ratio: 0.95 }, // 1:0.95 volume/mass swap
-            // Future additions can go here (e.g., 'gluten': { substitute: 'rice_flour', ratio: 1.0 })
-        };
+  if (substitutes?.flourAlternative && ['whole-wheat', 'rye'].includes(substitutes.flourAlternative.type)) {
+    const alt = substitutes.flourAlternative;
+    // Calculate the actual grams of alternative flour used, adjusting for its ratio factor
+    mainFlour = weight * alt.ratioFactor; 
+    substituteFactor = alt.ratioFactor;
+  }
 
-        for (const [originalIngredientName, substituteRule] of Object.entries(substitutions)) {
-            if (!totalIngredients.has(originalIngredientName)) {
-                warnings.push(`Warning: Original ingredient "${originalIngredientName}" not found in the recipe.`);
-                continue;
-            }
+  // --- 2. Standard Calculations (Base Ingredients) ---
+  let totalLiquid = mainFlour * HYDRATION_RATES[flourType];
+  const saltWeight = weight * BAKERS_PERCENTAGES.SALT;
+  const yeastWeight = weight * BAKERS_PERCENTAGES.YEAST;
+  const oilWeight = weight * BAKERS_PERCENTAGES.OIL;
+  const mixinWeight = weight * BAKERS_PERCENTAGES.MIXIN;
 
-            let originalAmount = totalIngredients.get(originalIngredientName)!;
+  let sugarWeight = weight * BAKERS_PERCENTAGES.SUGAR;
+  let condensedWeight = 0;
+  let liquidName = 'Water';
+  let baseLiquidAmount = totalLiquid;
+  let eggCount = 0;
+  let tzFlour = 0;
+  let tzLiquid = 0;
 
-            const rule = substitutionRules[originalIngredientName];
-            if (rule) {
-                // Apply substitution based on defined ratio
-                totalIngredients.delete(originalIngredientName);
-                const newAmount = Math.max(0, originalAmount * rule.ratio); // Ensure non-negative amount
-                totalIngredients.set(rule.substitute, newAmount);
-                warnings.push(`Substitution applied: ${originalIngredientName} -> ${rule.substitute}. Amount adjusted by a ratio of ${rule.ratio}.`);
-            } else {
-                // Handle unhandled subs (as before)
-                warnings.push(`Unhandled substitution attempt: ${originalIngredientName} to ${substituteName}. Skipping.`);
-            }
-        }
 
-    return {
-        ingredients: Object.fromEntries(totalIngredients),
-        warnings: warnings
-    };
-};
+  // --- 3. Advanced Substitutions and Liquid Adjustments (Handling Inputs) ---
 
-/**
- * @description Performs complex structural calculations based on the overall bread profile parameters (e.g., hydration, rise time).
- * This function is intended to contain advanced chemical/baking science logic for V1.2.
- * @param profile The calculated bread profile object.
- * @returns A detailed analysis of potential baking issues or required adjustments.
- */
-export const analyzeProfileForBakingStability = (profile: any): string[] => {
-    const issues: string[] = [];
-    if (profile.hydration > 0.9) {
-        issues.push("High hydration detected (>90%). Consider reducing liquid by 5-10% or extending the bulk fermentation time.");
-    }
-    // Add more complex logic here...
+  if (liquidBase === 'condensed') {
+    const condensedGrams = weight * 0.20; // Example factor
+    condensedWeight = condensedGrams;
+    sugarWeight = 0;
+    // Reduced liquid contribution from condensed milk vs simple water calculation
+    baseLiquidAmount = Math.max(0, totalLiquid - (condensedGrams * 0.30)); 
+  } else if (liquidBase === 'flaxegg' && substitutes?.eggSubstituteWeightGrams) {
+    // Example: Flax Egg Replacement (Assuming a fixed amount of flax for this calculation model)
+    const flaxWeight = substitutes.eggSubstituteWeightGrams;
+    sugarWeight += 25; // Adding compensating sugar mass
+    baseLiquidAmount = Math.max(0, baseLiquidAmount + 30); // Assuming liquid boost from mixing process
+  } else if (liquidBase === 'milk') {
+    liquidName = 'Fresh Milk';
+  } else if (liquidBase === 'evap') {
+    liquidName = 'Evaporated (Evap)';
+  }
 
-    return issues;
+
+  // --- 4. Technique-Specific Calculations (Modifying Primary Components) ---
+  if (technique === 'egg' && !substitutes?.eggSubstituteWeightGrams) {
+    eggCount = Math.max(1, Math.round(weight / 400));
+    const eggLiquidContribution = eggCount * 50; // ~50g per egg liquid contribution
+    baseLiquidAmount = Math.max(0, baseLiquidAmount - eggLiquidContribution);
+  } else if (technique === 'tangzhong') {
+    tzFlour = weight * 0.05;
+    tzLiquid = tzFlour * 5;
+    mainFlour = mainFlour - tzFlour; // Adjust primary flour weight for tangzhong inclusion
+    baseLiquidAmount = Math.max(0, baseLiquidAmount - tzLiquid);
+  }
+
+  // --- Final Ingredient Assembly (Applying Substitution Factor) ---
+  return {
+    mainFlour: parseFloat((mainFlour * substituteFactor).toFixed(2)), 
+    mainLiquid: parseFloat(Math.max(0, baseLiquidAmount).toFixed(2)), 
+    saltWeight: parseFloat((weight * BAKERS_PERCENTAGES.SALT).toFixed(2)),
+    yeastWeight: parseFloat((weight * BAKERS_PERCENTAGES.YEAST).toFixed(2)),
+    oilWeight: parseFloat((weight * BAKERS_PERCENTAGES.OIL).toFixed(2)),
+    sugarWeight: parseFloat(Math.max(0, sugarWeight).toFixed(2)),
+    condensedWeight: parseFloat(Math.max(0, condensedWeight).toFixed(2)),
+    mixinWeight: parseFloat((weight * BAKERS_PERCENTAGES.MIXIN).toFixed(2)),
+    eggCount: eggCount,
+    tzFlour: parseFloat((tzFlour * substituteFactor).toFixed(2)), // Apply substitution factor to all flour parts
+    tzLiquid: parseFloat((tzLiquid * substituteFactor).toFixed(2)),
+    liquidName: liquidName,
+  };
 };
