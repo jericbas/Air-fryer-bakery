@@ -1,22 +1,15 @@
 # Dependencies
-/node_modules
-/.bun/
+node_modules/
 
 # Build output
 dist/
 build/
 
-# Logs and cache
+# Local environment files
+*.env
+.local
+.DS_Store
+
+# Logs and caches
 *.log
-npm-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# IDE & Editor files
-.idea/
-.vscode/
-*.swp
-
-# Environment variables
-.env
-.env.*.local
+/cache/
