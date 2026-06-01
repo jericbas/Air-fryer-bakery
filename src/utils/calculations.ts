@@ -1,4 +1,4 @@
-import { HYDRATION_RATES, BAKERS_PERCENTAGES } from '../constants/recipeConfig';
+import { FOOD_TYPE_RATIOS, CRISPNESS_MODIFIERS } from './constants/recipeConfig';
 import { RecipeConfig, CalculatedIngredients, DoughProfile, SubstituteInputs } from '../types';
 
 /**
