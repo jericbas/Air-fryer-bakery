@@ -8,11 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^1.17.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lucide-react": "^0.379.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.2.2",
