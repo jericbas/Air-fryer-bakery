@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --hot --config vite.config.ts",
+    "build": "bun run build:clean && vite build",
+    "build:clean": "rimraf dist",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,7 +15,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
-    "@tailwindcss/postcss": "^4.3.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.2.2",
