@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --hot --config vite.config.ts",
-    "build": "bun run build:clean && vite build",
+    "build": "bun run build:clean && tsc --noEmit && vite build",
     "build:clean": "rimraf dist",
     "preview": "vite preview"
   },
