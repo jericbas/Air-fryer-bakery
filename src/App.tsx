@@ -1,4 +1,3 @@
-import React from 'react';
 import { Wheat } from 'lucide-react';
 import { useBreadCalculator } from './hooks/useBreadCalculator';
 import { SetupForm } from './components/SetupForm';

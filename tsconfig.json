@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
+    "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM"],
-    "moduleResolution": "node", 
-    "strict": true,
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM"],
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "references": [
-    { "path": "./components" },
-    { "path": "./hooks" },
-    { "path": "./types" },
-    { "path": "./constants" },
-    { "path": "./utils" }
+    "src/**/*.tsx",
+    "vite.config.ts"
   ]
 }
