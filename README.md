@@ -43,10 +43,3 @@ Follow these steps to get the Air Fryer Bakery running locally.
 
 ---
 
-## 💡 Common README Best Practices Used Here
-A good `README` should always answer three questions immediately:
-1.  **What is this?** (Overview)
-2.  **How do I set it up?** (Installation/Usage)
-3.  **How do I run it?** (Commands)
-
-This structure ensures maximum usability for new developers and end-users alike.
