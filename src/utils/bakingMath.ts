@@ -18,9 +18,11 @@ export interface IngredientWeight {
  * @returns A map where keys are ingredient names and values are their scaled weights.
  */
 export function calculateIngredientWeights(baseFlour: number, recipeMode: RecipeMode): Record<string, IngredientWeight> {
-    if (typeof baseFlour !== 'number' || isNaN(baseFlour) || baseFlour <= 0) {
-        throw new Error("Base flour weight must be a positive number.");
-    }
+    if (typeof baseFlour !== 'number' || isNaN(baseFlour) || parseFloat(baseFlour) < 0) {
+    console.warn("Invalid or negative flour weight detected. Calculating with 0g.");
+    return {}; // Return empty weights object on invalid input
+}
+let effectiveFlour = Math.max(0, baseFlour);
 
     // Initialize results map
     const weights: Record<string, IngredientWeight> = {};

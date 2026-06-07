@@ -13,3 +13,7 @@ build/
 # Logs and caches
 *.log
 /cache/
+
+# Test and reporting
+playwright-report/
+test-results/
