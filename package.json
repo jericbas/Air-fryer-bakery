@@ -1,0 +1,18 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "Baking Calculator E2E Tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "bun run vitest",
+    "e2e:test": "bun test e2e-tests/base.spec.js --environment jsdom"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitest/ui": "^1.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
