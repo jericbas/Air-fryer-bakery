@@ -1,18 +1,24 @@
 // src/components/CalculatorPage.tsx
 import React from 'react';
-import { useBakingCalculator } from '../hooks/useBakingCalculator';
+import { useBakingCalculator } from '../hooks/useBakingCalculator.js';
 
 /**
  * Main page component responsible for orchestrating the UI based on calculated state.
  * This component consumes the custom hook and renders the dynamic interface elements.
  */
 const CalculatorPage: React.FC = () => {
-    // 24. State Hook consumption
-    const { inputs, results, setInput } = useBakingCalculator();
+    const { config } = useBakingCalculator();
 
-    if (!results.success) {
-        return <div className="text-red-600 p-4">Error: {results.message}</div>;
-    }
+    return (
+        <div className="p-8 max-w-6xl mx-auto">
+            <h1 className="text-3xl font-bold mb-8 text-amber-900">Air Fryer Bakery Calculator</h1>
+            <div className="rounded-xl border border-stone-200 p-6 bg-white">
+                <p className="text-stone-700">Recipe mode: <strong>{config.recipeMode}</strong></p>
+                <p className="text-stone-500 mt-2">This component is a placeholder for the rebuilt calculator page.</p>
+            </div>
+        </div>
+    );
+};
 
     // Conditional Rendering (Section 31/32 - Example using 'bread')
     const RecipeInputs = () => (

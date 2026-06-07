@@ -1,6 +1,6 @@
 // src/hooks/useBakingCalculator.tsx
 import React, { useState, useMemo } from 'react';
-import { calculateIngredientWeights, RecipeMode, IngredientWeight } from '../utils/bakingMath';
+import { calculateIngredientWeights, RecipeMode, IngredientWeight } from '../utils/bakingMath.js';
 
 /**
  * Defines the structure for all inputs required by the baking process.

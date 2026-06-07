@@ -19,15 +19,15 @@ export interface IngredientWeight {
  */
 export function calculateIngredientWeights(baseFlour: number, recipeMode: RecipeMode): Record<string, IngredientWeight> {
     if (typeof baseFlour !== 'number' || isNaN(baseFlour) || parseFloat(baseFlour) < 0) {
-    console.warn("Invalid or negative flour weight detected. Calculating with 0g.");
-    return {}; // Return empty weights object on invalid input
-}
-let effectiveFlour = Math.max(0, baseFlour);
+        console.warn("Invalid or negative flour weight detected. Calculating with 0g.");
+        return {}; // Return empty weights object on invalid input
+    }
+    let effectiveFlour = Math.max(0, baseFlour);
 
     // Initialize results map
     const weights: Record<string, IngredientWeight> = {};
 
-    console.log(\`--- Calculating Weights for \${recipeMode} mode with \${baseFlour}g flour ---\`);
+    console.log(`--- Calculating Weights for ${recipeMode} mode with ${baseFlour}g flour ---`);
 
     switch (recipeMode) {
         case 'bread':
@@ -73,7 +73,7 @@ let effectiveFlour = Math.max(0, baseFlour);
     // 19. Fruit Soaking Rule: Calculate an ideal range for custom liquids
     const customFruitWeight = baseFlour * 0.1; // Dummy calculation for demonstration
     const idealCustomLiquid = customFruitWeight * 0.27;
-    console.log(\`Ideal Custom Liquid Range calculated: \${idealCustomLiquid}g\`);
+    console.log(`Ideal Custom Liquid Range calculated: ${idealCustomLiquid}g`);
 
     // The function returns the final, scaled weights.
     return weights;

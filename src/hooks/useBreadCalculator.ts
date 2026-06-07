@@ -1,22 +1,49 @@
 import { useState, useMemo } from 'react';
-import { RecipeConfig, FlourType, LiquidBase, Technique, MixinType } from '../types';
-import { calculateIngredients, calculateProfile } from '../utils/calculations';
+import { RecipeConfig, RecipeMode } from '../types.js';
+import { calculateIngredients, calculateProfile } from '../utils/calculations.js';
 
-export const useBreadCalculator = () => {
+export const useBakingCalculator = () => {
   const [config, setConfig] = useState<RecipeConfig>({
-    flourWeight: 500,
+    baseFlour: 250,
+    recipeMode: 'fruitCake',
+    isDiabetic: false,
+    // Bread defaults
     flourType: 'ap',
     liquidBase: 'water',
-    technique: 'none',
-    mixin: 'none'
+    breadTechnique: 'none',
+    breadMixin: 'none',
+    // Fruit Cake defaults
+    cakeStyle: 'traditional',
+    jamType: 'none',
+    soakLiquid: 'none',
+    useCustomLiquid: false,
+    // Cookie defaults
+    cookieStyle: 'classic',
+    // Brownie defaults
+    brownieStyle: 'fudgy',
+    // Empanada defaults
+    fatType: 'butter',
   });
 
   const updateConfig = <K extends keyof RecipeConfig>(key: K, value: RecipeConfig[K]) => {
-    setConfig((prev) => ({ ...prev, [key]: value }));
+    setConfig((prev: RecipeConfig) => ({ ...prev, [key]: value }));
+  };
+
+  const setRecipeMode = (mode: RecipeMode) => {
+    updateConfig('recipeMode', mode);
   };
 
   const ingredients = useMemo(() => calculateIngredients(config), [config]);
   const profile = useMemo(() => calculateProfile(config), [config]);
 
-  return { config, updateConfig, ingredients, profile };
+  return {
+    config,
+    updateConfig,
+    setRecipeMode,
+    ingredients,
+    profile,
+  };
 };
+
+// Keep old export for backwards compatibility
+export { useBakingCalculator as useBreadCalculator };
