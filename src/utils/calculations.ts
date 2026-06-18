@@ -1,9 +1,15 @@
 import { HYDRATION_RATES, BAKERS_PERCENTAGES } from '../constants/recipeConfig';
 import { RecipeConfig, CalculatedIngredients, DoughProfile } from '../types';
+import { applyCondensadaRule } from './bakingRules';
 
+/**
+ * Performs core baking calculations based on the RecipeConfig.
+ * Adheres to Baker's Math (Flour = 100%).
+ */
 export const calculateIngredients = (config: RecipeConfig): CalculatedIngredients => {
   const { flourWeight: weight, flourType, liquidBase, technique } = config;
   
+  // Standard Baker's Percentages
   const totalLiquid = weight * HYDRATION_RATES[flourType];
   const saltWeight = weight * BAKERS_PERCENTAGES.SALT;
   const yeastWeight = weight * BAKERS_PERCENTAGES.YEAST;
@@ -15,14 +21,15 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
   let liquidName = 'Water';
   let baseLiquidAmount = totalLiquid;
 
+  // Liquid Base Specific Logic
   if (liquidBase === 'milk') {
     liquidName = 'Fresh Milk';
   } else if (liquidBase === 'evap') {
     liquidName = 'Evaporated (Evap)';
   } else if (liquidBase === 'condensed') {
     condensedWeight = weight * 0.20;
-    sugarWeight = 0;
-    baseLiquidAmount = baseLiquidAmount - (condensedWeight * 0.30);
+    // Apply Condensada Rule: reduce liquid by 30% of condensed milk weight, sugar to 0
+    [baseLiquidAmount, sugarWeight] = applyCondensadaRule(baseLiquidAmount, condensedWeight);
   }
 
   let eggCount = 0;
@@ -31,6 +38,7 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
   let mainFlour = weight;
   let mainLiquid = baseLiquidAmount;
 
+  // Technique Specific Logic
   if (technique === 'egg') {
     eggCount = Math.max(1, Math.round(weight / 400));
     const eggLiquid = eggCount * 50;
@@ -48,6 +56,10 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
   };
 };
 
+/**
+ * Calculates a Dough Profile (softness, richness, chewiness)
+ * based on ingredient types and techniques.
+ */
 export const calculateProfile = (config: RecipeConfig): DoughProfile => {
   const { flourType, liquidBase, technique, mixin } = config;
 
@@ -75,7 +87,6 @@ export const calculateProfile = (config: RecipeConfig): DoughProfile => {
     chewiness: Math.min(5, chewiness)
   };
 };
-
 
 // Formatting helpers
 export const formatCups = (g: number) => `~${(g / 125).toFixed(1)} cups 🥛`;
