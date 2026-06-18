@@ -38,6 +38,12 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
   let mainFlour = weight;
   let mainLiquid = baseLiquidAmount;
 
+  // Handle Flour Substitutions
+  if (config.substitutes?.flourAlternative) {
+    const { ratioFactor } = config.substitutes.flourAlternative;
+    mainFlour = weight * ratioFactor;
+  }
+
   // Technique Specific Logic
   if (technique === 'egg') {
     eggCount = Math.max(1, Math.round(weight / 400));

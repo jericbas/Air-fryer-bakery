@@ -1,1 +1,4 @@
-/** Service class for baking calculations */\nclass BakerCalculatorService {\n  // Placeholder methods and properties\n}
+/** Service class for baking calculations */
+class BakerCalculatorService {
+  // Placeholder methods and properties
+}

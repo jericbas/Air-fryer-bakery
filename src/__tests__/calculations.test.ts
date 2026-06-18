@@ -49,7 +49,7 @@ describe('calculateIngredients', () => {
 
         // Check that sugar is zeroed out and condensed weight is calculated
         expect(ingredients.sugarWeight).toBeCloseTo(0, 1);
-        expect(ingredients.condensedWeight).toBeCloseTo(8, 1); // 400 * 0.20
+        expect(ingredients.condensedWeight).toBeCloseTo(80, 1); // 400 * 0.20
     });
 
     it('should incorporate advanced flour alternative substitution (e.g., whole-wheat)', () => {
