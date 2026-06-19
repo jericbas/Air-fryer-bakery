@@ -4,6 +4,8 @@
  * All calculations are relative to the base flour weight (100%).
  */
 
+import { FlourType, LiquidBase, Technique, MixinType, RecipeConfig } from "../types/index";
+
 export type RecipeMode = 'bread' | 'cake' | 'cookie';
 
 export interface IngredientWeight {
@@ -17,7 +19,12 @@ export interface IngredientWeight {
  * @param recipeMode The specific baking context ('bread', 'cake', or 'cookie').
  * @returns A map where keys are ingredient names and values are their scaled weights.
  */
-export function calculateIngredientWeights(baseFlour: number, recipeMode: RecipeMode): Record<string, IngredientWeight> {
+export function calculateIngredientWeights(baseFlour: number, recipeMode: RecipeMode, inputs: {
+  flourType?: FlourType;
+  liquidBase?: LiquidBase;
+  technique?: Technique;
+  mixin?: MixinType;
+}): Record<string, IngredientWeight> {
     if (typeof baseFlour !== 'number' || isNaN(baseFlour) || baseFlour <= 0) {
         throw new Error("Base flour weight must be a positive number.");
     }
@@ -25,13 +32,13 @@ export function calculateIngredientWeights(baseFlour: number, recipeMode: Recipe
     // Initialize results map
     const weights: Record<string, IngredientWeight> = {};
 
-    console.log(\`--- Calculating Weights for \${recipeMode} mode with \${baseFlour}g flour ---\`);
+    console.log(`--- Calculating Weights for ${recipeMode} mode with ${baseFlour}g flour ---`);
 
     switch (recipeMode) {
         case 'bread':
             weights['flour'] = { grams: baseFlour };
             // 16. Hydration Logic (Bread): Must handle specific hydration rates based on flourType
-            const hydrationRate = 0.65; // Example rate for high protein flour
+            const hydrationRate = (inputs?.flourType === 'bread' ? 0.70 : 0.65);
             weights['liquid'] = { grams: baseFlour * hydrationRate, unit: 'grams/ml' };
 
             // Add other bread components (e.g., salt)
@@ -60,18 +67,22 @@ export function calculateIngredientWeights(baseFlour: number, recipeMode: Recipe
     // --- Special Rule Handling Simulation (Placeholder Logic) ---
 
     // 18. Condensada Rule: If liquidBase === 'condensed', subtract 30% of input weight, and sugar weights must be zero.
-    const isCondensedLiquidUsed = false; // In a real app, this would check the current state/input props
+    const isCondensedLiquidUsed = inputs?.liquidBase === 'condensed';
     if (isCondensedLiquidUsed) {
         console.log("Applying Condensada Rule: Liquid adjusted and Sugar set to 0.");
         // Simulation of adjustment
-        weights['liquid'] = { grams: weights['liquid'].grams * 0.7, unit: 'grams/ml' };
-        delete weights['sugar']; // Assuming sugar key exists for all modes
+        if (weights['liquid']) {
+            weights['liquid'] = { grams: weights['liquid'].grams * 0.7, unit: 'grams/ml' };
+        }
+        if (weights['sugar']) {
+            weights['sugar'] = { grams: 0 };
+        }
     }
 
     // 19. Fruit Soaking Rule: Calculate an ideal range for custom liquids
     const customFruitWeight = baseFlour * 0.1; // Dummy calculation for demonstration
     const idealCustomLiquid = customFruitWeight * 0.27;
-    console.log(\`Ideal Custom Liquid Range calculated: \${idealCustomLiquid}g\`);
+    console.log(`Ideal Custom Liquid Range calculated: ${idealCustomLiquid}g`);
 
     // The function returns the final, scaled weights.
     return weights;

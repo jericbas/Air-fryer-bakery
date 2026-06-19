@@ -1,5 +1,5 @@
 import { HYDRATION_RATES, BAKERS_PERCENTAGES } from '../constants/recipeConfig';
-import { RecipeConfig, CalculatedIngredients, DoughProfile } from '../types';
+import { RecipeConfig, CalculatedIngredients, DoughProfile } from '../types/index';
 import { applyCondensadaRule } from './bakingRules';
 
 /**

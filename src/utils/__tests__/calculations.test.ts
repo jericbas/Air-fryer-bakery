@@ -1,8 +1,9 @@
-import { calculateIngredients } from './calculations';
-import { RecipeConfig } from '../../types';
+import { describe, test, expect } from 'vitest';
+import { calculateIngredients } from '../calculations';
+import { RecipeConfig, FlourType } from '../../types/index';
 
 describe('Baking Calculations Engine', () => {
-  const baseConfig = {
+  const baseConfig: RecipeConfig = {
     flourWeight: 1000,
     flourType: 'ap',
     liquidBase: 'water',
@@ -11,7 +12,7 @@ describe('Baking Calculations Engine', () => {
   };
 
   test('should calculate standard bread weights correctly', () => {
-    const config = { ...baseConfig, flourType: 'bread' };
+    const config: RecipeConfig = { ...baseConfig, flourType: 'bread' };
     const result = calculateIngredients(config);
     
     expect(result.mainFlour).toBe(1000);
@@ -23,7 +24,7 @@ describe('Baking Calculations Engine', () => {
   });
 
   test('should apply Condensada Rule correctly', () => {
-    const config = { ...baseConfig, liquidBase: 'condensed' };
+    const config: RecipeConfig = { ...baseConfig, liquidBase: 'condensed' };
     const result = calculateIngredients(config);
     
     // Condensed weight is 20% of 1000 = 200
@@ -37,7 +38,7 @@ describe('Baking Calculations Engine', () => {
   });
 
   test('should handle Tangzhong technique', () => {
-    const config = { ...baseConfig, technique: 'tangzhong' };
+    const config: RecipeConfig = { ...baseConfig, technique: 'tangzhong' };
     const result = calculateIngredients(config);
     
     // tzFlour = 1000 * 0.05 = 50
@@ -51,7 +52,7 @@ describe('Baking Calculations Engine', () => {
   });
 
   test('should handle Egg technique', () => {
-    const config = { ...baseConfig, technique: 'egg' };
+    const config: RecipeConfig = { ...baseConfig, technique: 'egg' };
     const result = calculateIngredients(config);
     
     // eggCount = Math.max(1, Math.round(1000 / 400)) = 3

@@ -1,6 +1,7 @@
 // src/hooks/useBakingCalculator.tsx
 import React, { useState, useMemo } from 'react';
 import { calculateIngredientWeights, RecipeMode, IngredientWeight } from '../utils/bakingMath';
+import { FlourType, LiquidBase, Technique, MixinType, RecipeConfig } from '../types/index';
 
 /**
  * Defines the structure for all inputs required by the baking process.
@@ -9,7 +10,9 @@ import { calculateIngredientWeights, RecipeMode, IngredientWeight } from '../uti
 interface BakingInputs {
     flourWeight: number; // Primary input (grams)
     recipeMode: RecipeMode;
-    liquidBase: string;  // e.g., 'water', 'condensed'
+    liquidBase: LiquidBase;
+    technique: Technique;
+    mixin: MixinType;
     customFruitWeight: number; // grams
 }
 
@@ -23,6 +26,8 @@ export const useBakingCalculator = () => {
         flourWeight: 500, // Default value example
         recipeMode: 'bread',
         liquidBase: 'water',
+        technique: 'none',
+        mixin: 'none',
         customFruitWeight: 100,
     });
 
@@ -30,7 +35,7 @@ export const useBakingCalculator = () => {
     const calculatedResults = useMemo(() => {
         try {
             // Pass relevant data to the pure math engine
-            const weights = calculateIngredientWeights(inputs.flourWeight, inputs.recipeMode);
+            const weights = calculateIngredientWeights(inputs.flourWeight, inputs.recipeMode, inputs);
 
             // Combine and structure results for easy component consumption
             return {

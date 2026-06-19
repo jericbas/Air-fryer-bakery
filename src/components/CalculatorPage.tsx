@@ -1,6 +1,7 @@
 // src/components/CalculatorPage.tsx
 import React from 'react';
 import { useBakingCalculator } from '../hooks/useBakingCalculator';
+import { Weight } from '../types/index';
 
 /**
  * Main page component responsible for orchestrating the UI based on calculated state.
@@ -19,7 +20,7 @@ const CalculatorPage: React.FC = () => {
         <section className="p-4 bg-teal-50 rounded shadow">
             <h2 className="text-xl font-semibold mb-4">Input Controls</h2>
             {/* Input for Flour Weight */}
-            <div>
+            <div className="mb-4">
                 <label htmlFor="flourWeight" className="block text-sm font-medium text-gray-700">Flour Weight (g):</label>
                 <input
                     id="flourWeight"
@@ -46,7 +47,7 @@ const CalculatorPage: React.FC = () => {
             <div className="lg:col-span-2 space-y-6">
                 <h2 className="text-2xl font-bold text-amber-900 border-b pb-2">Calculated Ingredients</h2>
                 <div className="bg-white p-4 rounded shadow-md overflow-auto max-h-[70vh]">
-                    {Object.entries(results.weights).map(([name, weight]) => (
+                    {Object.entries(results.weights as Record<string, Weight>).map(([name, weight]) => (
                         <div key={name} className="flex justify-between py-2 border-b last:border-b-0">
                             <span className="font-medium text-gray-600">{name.charAt(0).toUpperCase() + name.slice(1)}:</span>
                             <span className={`text-lg font-bold ${weight.grams > 0 ? 'text-teal-700' : 'text-red-500'}`}>

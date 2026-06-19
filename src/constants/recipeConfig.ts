@@ -1,3 +1,4 @@
+import { FlourType, LiquidBase, Technique, MixinType } from "../types/index";
 export const HYDRATION_RATES: Record<FlourType, number> = {
   ap: 0.60,
   bread: 0.65,

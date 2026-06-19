@@ -3,12 +3,24 @@ export type LiquidBase = 'water' | 'milk' | 'evap' | 'condensed';
 export type Technique = 'none' | 'egg' | 'tangzhong';
 export type MixinType = 'none' | 'Raisins (Pasas)' | 'Chocolate Chips' | 'Cheese (Cheddar/Edam)' | 'Mozzarella Cheese' | 'Mixed Nuts';
 
+export interface SubstituteInputs {
+  flourAlternative?: {
+    type: string;
+    ratioFactor: number;
+  };
+}
+
 export interface RecipeConfig {
   flourWeight: number;
   flourType: FlourType;
   liquidBase: LiquidBase;
   technique: Technique;
   mixin: MixinType;
+  substitutes?: SubstituteInputs;
+}
+
+export interface Weight {
+  grams: number;
 }
 
 export interface CalculatedIngredients {
