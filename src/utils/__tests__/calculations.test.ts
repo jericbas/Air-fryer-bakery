@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { calculateIngredients } from '../calculations';
-import { RecipeConfig, FlourType } from '../../types/index';
+import { calculateIngredients } from '../../features/calculator/utils/calculations';
+import { RecipeConfig } from '../../features/calculator/types';
 
 describe('Baking Calculations Engine', () => {
   const baseConfig: RecipeConfig = {
@@ -9,6 +9,7 @@ describe('Baking Calculations Engine', () => {
     liquidBase: 'water',
     technique: 'none',
     mixin: 'none',
+    recipeMode: 'bread',
   };
 
   test('should calculate standard bread weights correctly', () => {
