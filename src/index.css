@@ -41,3 +41,47 @@
   --depth: 1; /* Adds a shadow and subtle 3D effect to components */
   --noise: 0; /* Adds a subtle noise effect to components */
 }
+
+/* Dark mode variant of bakery theme */
+@plugin "daisyui/theme" {
+  name: "bakery-dark";
+  prefersdark: true; /* set as default dark mode */
+  color-scheme: dark;
+
+  --color-base-100: oklch(18% 0.02 60);
+  --color-base-200: oklch(14% 0.02 60);
+  --color-base-300: oklch(10% 0.02 60);
+  --color-base-content: oklch(95% 0.01 60);
+  --color-primary: oklch(70% 0.18 75);
+  --color-primary-content: oklch(20% 0.05 60);
+  --color-secondary: oklch(65% 0.18 45);
+  --color-secondary-content: oklch(15% 0.03 60);
+  --color-accent: oklch(60% 0.15 160);
+  --color-accent-content: oklch(15% 0.03 160);
+  --color-neutral: oklch(85% 0.02 60);
+  --color-neutral-content: oklch(15% 0.03 60);
+  --color-info: oklch(65% 0.15 230);
+  --color-info-content: oklch(15% 0.03 230);
+  --color-success: oklch(60% 0.18 150);
+  --color-success-content: oklch(15% 0.03 150);
+  --color-warning: oklch(80% 0.16 85);
+  --color-warning-content: oklch(15% 0.03 85);
+  --color-error: oklch(55% 0.22 25);
+  --color-error-content: oklch(95% 0.01 25);
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* Theme transition for smooth switching */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
