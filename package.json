@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --hot",
+    "dev": "vite",
     "test": "vitest",
     "build": "npm run build:clean && tsc --noEmit && vite build",
     "build:clean": "rimraf dist",
