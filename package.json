@@ -2,8 +2,9 @@
   "name": "air-fryer-bakery",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "vite --hot --config vite.config.ts",
+    "dev": "vite --hot",
     "test": "vitest",
     "build": "npm run build:clean && tsc --noEmit && vite build",
     "build:clean": "rimraf dist",
