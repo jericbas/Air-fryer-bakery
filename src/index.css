@@ -1,1 +1,43 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+/* Custom warm "bakery" theme (daisyUI 5, per llms.txt `@plugin "daisyui/theme"` syntax) */
+@plugin "daisyui/theme" {
+  name: "bakery";
+  default: true; /* set as default */
+  prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+  color-scheme: light; /* color of browser-provided UI */
+
+  --color-base-100: oklch(98% 0.015 80);
+  --color-base-200: oklch(95% 0.02 80);
+  --color-base-300: oklch(92% 0.03 80);
+  --color-base-content: oklch(22% 0.04 55);
+  --color-primary: oklch(72% 0.15 75);
+  --color-primary-content: oklch(25% 0.05 60);
+  --color-secondary: oklch(68% 0.16 45);
+  --color-secondary-content: oklch(98% 0.01 60);
+  --color-accent: oklch(58% 0.09 60);
+  --color-accent-content: oklch(98% 0.01 60);
+  --color-neutral: oklch(30% 0.04 55);
+  --color-neutral-content: oklch(98% 0.01 60);
+  --color-info: oklch(70% 0.15 230);
+  --color-info-content: oklch(98% 0.01 230);
+  --color-success: oklch(65% 0.18 150);
+  --color-success-content: oklch(98% 0.01 150);
+  --color-warning: oklch(85% 0.16 85);
+  --color-warning-content: oklch(25% 0.05 80);
+  --color-error: oklch(60% 0.22 25);
+  --color-error-content: oklch(98% 0.01 25);
+
+  --radius-selector: 1rem; /* border radius of selectors (checkbox, toggle, badge) */
+  --radius-field: 0.5rem; /* border radius of fields (button, input, select, tab) */
+  --radius-box: 1rem; /* border radius of boxes (card, modal, alert) */
+
+  --size-selector: 0.25rem; /* base size of selectors (checkbox, toggle, badge) */
+  --size-field: 0.25rem; /* base size of fields (button, input, select, tab) */
+
+  --border: 1px; /* border size */
+
+  --depth: 1; /* Adds a shadow and subtle 3D effect to components */
+  --noise: 0; /* Adds a subtle noise effect to components */
+}
