@@ -24,6 +24,7 @@ export interface RecipeConfig {
   liquidBase: LiquidBase;
   technique: Technique;
   mixin: MixinType;
+  recipeMode: RecipeMode;
   substitutes?: SubstituteInputs;
   // Extended options for cake/cookie modes
   isDiabetic?: boolean;

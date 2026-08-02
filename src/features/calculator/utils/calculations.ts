@@ -13,11 +13,6 @@ import {
   ScalingResult,
   IngredientWeight,
   FormInputs,
-  RecipeMode,
-  FlourType,
-  LiquidBase,
-  Technique,
-  MixinType,
 } from '../types';
 
 import {
@@ -195,7 +190,7 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
   
   // Calculate totals
   const totalWeight = mainFlour + mainLiquid + tzFlour + tzLiquid + saltWeight + yeastWeight + oilWeight + sugarWeight + condensedWeight + mixinWeight + (eggCount * 50);
-  const totalLiquid = mainLiquid + tzLiquid + condensedWeight + (eggCount * 50);
+  const calcTotalLiquid = mainLiquid + tzLiquid + condensedWeight + (eggCount * 50);
   
   return {
     mainFlour: round(mainFlour),
@@ -212,7 +207,7 @@ export const calculateIngredients = (config: RecipeConfig): CalculatedIngredient
     mixinWeight: round(mixinWeight),
     mixinLabel,
     totalWeight: round(totalWeight),
-    totalLiquid: round(totalLiquid),
+    totalLiquid: round(calcTotalLiquid),
   };
 };
 

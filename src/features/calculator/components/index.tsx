@@ -644,15 +644,21 @@ export const ScalingPanel: React.FC<ScalingPanelProps> = ({
 // AIR FRYER SETTINGS PANEL
 // ============================================================================
 
+type AirFryerPreset = { name: string; wattage: number; capacity: number; tempOffset: number };
+
 interface AirFryerPanelProps {
   config: RecipeConfig;
-  presets: typeof import('../hooks/useBakeryCalculator').AIR_FRYER_PRESETS;
+  presets: Record<string, AirFryerPreset>;
 }
 
 export const AirFryerPanel: React.FC<AirFryerPanelProps> = ({ config, presets }) => {
-  const [selectedPreset, setSelectedPreset] = React.useState<keyof typeof presets>('generic-1500w');
+  const presetKeys = Object.keys(presets);
+  const [selectedPreset, setSelectedPreset] = React.useState<string>(presetKeys[0] || 'generic-1500w');
   
   const preset = presets[selectedPreset];
+  
+  if (!preset) return null;
+  
   const baseTemp = 160;
   const adjustedTemp = baseTemp + preset.tempOffset;
   const baseTime = config.flourWeight <= 300 ? 12 : config.flourWeight <= 500 ? 15 : 18;
@@ -662,7 +668,7 @@ export const AirFryerPanel: React.FC<AirFryerPanelProps> = ({ config, presets })
       <Select
         label="Air Fryer Model"
         value={selectedPreset}
-        onChange={(e) => setSelectedPreset(e.target.value as keyof typeof presets)}
+        onChange={(e) => setSelectedPreset(e.target.value)}
         options={Object.entries(presets).map(([key, p]) => ({ 
           value: key, 
           label: `${p.name} (${p.wattage}W, ${p.capacity}L)` 

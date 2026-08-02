@@ -455,7 +455,7 @@ export const Collapse: React.FC<CollapseProps> = ({
 
 interface TooltipProps {
   content: React.ReactNode;
-  children: React.ReactElement;
+  children: React.ReactNode;
   position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
@@ -473,7 +473,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   
   return (
     <div className={`tooltip ${positionClasses[position]} inline-block`} tabIndex={0}>
-      {React.cloneElement(children, { className: (children.props.className || '') + ' cursor-help' })}
+      <div className="cursor-help">{children}</div>
       <div className="tooltip-content">{content}</div>
     </div>
   );

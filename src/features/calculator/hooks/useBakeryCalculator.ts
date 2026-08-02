@@ -95,17 +95,13 @@ export const useBakeryCalculator = (): UseBakeryCalculatorReturn => {
   const updateConfig = useCallback(<K extends keyof RecipeConfig>(key: K, value: RecipeConfig[K]) => {
     setConfig(prev => ({ ...prev, [key]: value }));
     // Also update form inputs if the key exists there
-    if (key in DEFAULT_FORM_INPUTS) {
-      setFormInputs(prev => ({ ...prev, [key]: value as FormInputs[K] }));
-    }
+    setFormInputs(prev => ({ ...prev, [key as string]: value }));
   }, []);
   
   const updateFormInput = useCallback(<K extends keyof FormInputs>(key: K, value: FormInputs[K]) => {
     setFormInputs(prev => ({ ...prev, [key]: value }));
     // Sync to config
-    if (key in DEFAULT_CONFIG) {
-      setConfig(prev => ({ ...prev, [key]: value as RecipeConfig[K] }));
-    }
+    setConfig(prev => ({ ...prev, [key as string]: value }));
   }, []);
   
   const resetConfig = useCallback(() => {
